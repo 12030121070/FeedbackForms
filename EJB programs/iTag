@@ -1,0 +1,113 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package ejb_package;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.tagext.TagSupport;
+/**
+ *
+ * @author student
+ */
+public class ITag_2 extends TagSupport
+{
+    private int start;
+    private int end;
+    private int step;
+    JspWriter out;
+    
+    public void setStart(int s)
+    {
+      start=s;
+    }
+    
+    public void setEnd(int e)
+    {
+      end=e;
+    }
+    
+    public void setStep(int st)
+    {
+      step=st;
+    }
+    
+    @Override
+    public int doStartTag() throws JspException
+    {
+        return EVAL_BODY_INCLUDE;
+    }
+    
+    @Override
+    public int doAfterBody() throws JspException
+    {
+        start=start+step;
+        if (start<=end)
+        {
+            try
+            {
+               out=pageContext.getOut();
+               out.println("<br>");
+               return EVAL_BODY_AGAIN;
+            }
+            catch(Exception e)
+            {
+                
+            }
+        }
+        return SKIP_BODY;
+    }
+            
+    
+}
+
+=====================================================================
+
+<%-- 
+    Document   : iTag2
+    Created on : 4 Dec, 2014, 12:09:02 PM
+    Author     : student
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <% int i=10; %>
+        <%@taglib uri="/WEB-INF/tlds/Sal" prefix="s" %>
+        <s:ITag2 start="3" end="10" step="2">
+            <b>This is JSP</b>
+            <%=i++%>
+        </s:ITag2>
+    </body>
+</html>
+
+=====================================================================
+
+<tag>
+      <name>ITag2</name>
+      <tag-class>ejb_package.ITag_2</tag-class>
+      <body-content>JSP</body-content>
+      <attribute>
+          <name>start</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+          <name>end</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      <attribute>
+          <name>step</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+      </attribute>
+  </tag>

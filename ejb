@@ -1,0 +1,64 @@
+class emp
+{
+String getname(int eid);
+int getSalary(int eid);
+String getInfo(int eid);
+int addSalary(int eid,int salary);
+}
+
+<message name="getNameRequest">
+	<part name="eid" type="xs:int"/>
+</message>
+
+<message name="getNameResponse">
+	<part name="value" type="xs:string"/>
+</message>
+
+<message name="getSalaryRequest">
+	<part name="eid" type="xs:int"/>
+</message>
+
+<message name="getSalaryResponse">
+	<part name="value" type="xs:int"/>
+</message>
+
+<message name="getInfoRequest">
+	<part name="eid" type="xs:int"/>
+</message>
+
+<message name="getInfoResponse">
+	<part name="value" type="xs:string"/>
+</message>
+
+<message name="addSalaryRequest">
+	<part name="eid" type="xs:int"/>
+	<part name="salary" type="xs:string"/>
+</message>
+
+<message name="addSalaryResponse">
+	<part name="value" type="xs:int"/>
+</message>
+
+<portType name="emp">
+	<operation name="getName">
+		<input message="getNameRequest"/>
+		<output message="getNameResponse"/>
+	</operation>
+
+	<operation name="getSalary">
+		<input message="getSalaryRequest"/>
+		<output message="getSalaryResponse"/>
+	</operation>
+
+	<operation name="getInfo">
+		<input message="getInfoRequest"/>
+		<output message="getInfoResponse"/>
+	</operation>
+
+	<operation name="addSalary">
+		<input message="addSalaryRequest"/>
+		<output message="addSalaryResponse"/>
+	</operation>
+</portType>
+
+

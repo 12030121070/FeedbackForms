@@ -1,0 +1,187 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package ejb_package;
+
+import java.io.IOException;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.tagext.*;
+/**
+ *
+ * @author student
+ */
+public class NumbrWord extends TagSupport{
+    
+     int number;
+     String[] nword=new String[10];
+     String[] tu= {"","One ","Two ","Three ","Four ","Five ","Six ","Seven ","Eight ","Nine ","Ten ","Eleven ","Twelve ","Thirteen ","Fourteen ","Fifteen ","Sixteen ","Seventeen ","Eighteen ","Nineteen "};
+     String[] tens= {"","","Twenty ","Thirty ","Forty ","Fifty ","Sixty ","Seventy ","Eighty ","Ninty "};
+     
+   
+    public void setNumber(int n)
+    {
+        number=n;
+    }
+    
+    public void num2word()
+    {
+        int pos=0;
+        if(number>0 && number<=99999)
+        {
+            int num=number%100;
+            number=number/100;
+            
+            //Tens and Units
+            if(num<=19)
+            {
+                nword[pos]=tu[num];
+                pos++;
+            }
+            else
+            {
+                if(num%10==0)
+                {
+                    num=num/10;
+                    nword[pos]=tens[num];
+                    pos++;
+                }
+                else
+                {
+                    nword[pos]=tu[(num%10)];
+                    pos++;
+                    nword[pos]=tens[(num/10)];
+                    pos++;
+                }
+            }
+            
+            //Hundreds
+            if(number>0)
+            {
+            nword[pos]=tu[number%10].concat("Hundred ");
+            pos++;
+            }
+            
+            //Thousands
+            number=number/10;
+            if(number>0)
+            {
+            if(number<20)
+            {
+                nword[pos]=tu[number].concat("Thousand ");
+                pos++;
+            }
+            else if(number%10==0)
+            {
+                nword[pos]=tens[(number/10)].concat("Thousand ");
+            }
+            else
+            {
+                nword[pos]=tens[(number/10)].concat(tu[(number%10)].concat("Thousand "));
+            }
+            }
+            
+        }
+        
+    }
+    
+    public void disp()
+    {
+        JspWriter out = pageContext.getOut();
+        try
+        {
+            for(int i=(nword.length-1);i>=0;i--)
+            {
+                if(nword[i]!=null)
+                {
+                     out.println(nword[i]);
+                }
+            
+            }
+        }
+        catch(IOException e)
+        {
+            
+        }
+    }
+    
+    @Override
+    public int doStartTag() throws JspException
+    {
+        
+        try
+        {
+            num2word();
+            disp();
+            
+        }
+        catch(Exception e)
+        {
+            
+        }
+        
+        return super.doStartTag();
+    }
+    
+}
+
+=====================================================================
+
+<%--
+    Document   : num2word
+    Created on : 27 Nov, 2014, 12:27:40 PM
+    Author     : student
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <%@taglib uri="/WEB-INF/tlds/Sal" prefix="s" %>
+    <s:Num2Word number="${param.number}"></s:Num2Word>
+    </body>
+</html>
+
+=====================================================================
+
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body>
+        <form name="Numbr" action="num2word.jsp">
+            Enter Number: <br>
+            <input type="text" name="number" />
+            <input type="Submit" value="SUBMIT"/>
+        </form>
+    </body>
+</html>
+
+=====================================================================
+
+<tag>
+      <name>Num2Word</name>
+      <tag-class>ejb_package.NumbrWord</tag-class>
+      <body-content>scriptless</body-content>
+      <attribute>
+          <name>number</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+      </attribute>
+  </tag>
+

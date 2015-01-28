@@ -1,0 +1,68 @@
+<%-- 
+    Document   : table
+    Created on : 15 Nov, 2014, 10:19:38 AM
+    Author     : student
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+      <%@taglib uri="/WEB-INF/tlds/Sal" prefix="ex" %>
+        <h1>Tables from 1 to 10:-</h1>
+	<br>
+        <ex:table></ex:table>  
+    </body>
+</html>
+
+========================================================================================
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package ejb_package;
+import javax.servlet.jsp.tagext.*;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
+import java.io.IOException;
+
+
+public class Tables extends SimpleTagSupport 
+{
+	private int j;
+	public void doTag() throws JspException, IOException
+	{
+	        JspWriter out = getJspContext().getOut();
+	        
+	        out.println("<table border=1>");
+        	for(int i=1;i<=10;i++)
+	        {
+   	         out.println("<tr>");
+	         for(int j=1;j<=10;j++)
+    		 {
+                 	out.println("<td>");
+                	out.println(i*j);
+                     	out.println("</td>");
+            	 }
+        	 out.println("</tr>");
+        	}
+             	out.println("</table>");
+    	}
+      
+}
+
+=======================================================================================
+
+<tag>
+      <name>table</name>
+      <tag-class>ejb_package.Tables</tag-class>
+      <body-content>scriptless</body-content>
+</tag>
+

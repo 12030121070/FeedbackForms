@@ -1,0 +1,166 @@
+<%-- 
+    Document   : primeNum
+    Created on : 8 Jan, 2015, 12:42:52 PM
+    Author     : student
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Prime Number</title>
+    </head>
+    <form name="form1" action="PrimeServlet">
+        Enter Number: <br><input type="text" name="num">
+        <br><br>
+        <input type="Submit" value="Submit">
+    </form>
+</html>
+
+======================================================================================
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package bean_pack;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.ejb.EJB;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ *
+ * @author student
+ */
+@WebServlet(name = "PrimeServlet", urlPatterns = {"/PrimeServlet"})
+public class PrimeServlet extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    
+    @EJB
+    protected PrimeLocal client;
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+           
+            int num=Integer.parseInt(request.getParameter("num"));
+            int prime=client.prime_num(num);
+            if(prime==0)
+            {
+                out.println("Number is Not Prime!");
+            }
+            else
+                out.println("Number is Prime!");
+        }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+}
+
+======================================================================================
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package bean_pack;
+
+import javax.ejb.Local;
+
+/**
+ *
+ * @author student
+ */
+@Local
+public interface PrimeLocal {
+    
+    int prime_num(int a); //method sign.
+
+    
+}
+
+
+=======================================================================================
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package bean_pack;
+
+import javax.ejb.Stateless;
+
+/**
+ *
+ * @author student
+ */
+@Stateless
+public class Prime implements PrimeLocal {
+
+    // Add business logic below. (Right-click in editor and choose
+    // "Insert Code > Add Business Method")
+    
+    @Override
+    public int prime_num(int a)
+    {
+        
+        int p=1;
+        for(int i=2;i<a;i++)
+        {
+            if(a%i==0)
+            {
+                p=0;
+                break;
+            }
+                
+        }
+        return p;
+    }
+}
+

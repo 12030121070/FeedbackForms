@@ -1,0 +1,130 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package ejb_package;
+
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.tagext.TagSupport;
+/**
+ *
+ * @author student
+ */
+public class DateForm extends TagSupport
+{
+    private String odate="08:10:1994";
+    private int dd;
+    private int mm;
+    private int yyyy;
+    private int choice=2;
+    
+    
+    public void setOdate(String d)
+    {
+        odate=d;
+    }
+    public void setChoice(String c)
+    {
+        choice=Integer.parseInt(c);
+    }
+    
+    void getVars()
+    {
+        String p="/|:";
+        String[] arr=odate.split(p,3);
+        dd=Integer.parseInt(arr[0]);
+        mm=Integer.parseInt(arr[1]);
+        yyyy=Integer.parseInt(arr[2]);
+    }
+    
+    @Override
+    public int doStartTag() throws JspException
+    {
+        JspWriter out = pageContext.getOut();
+        getVars();
+        
+        try{
+        switch(choice)
+        {
+            case 1: out.println(dd+"-"+mm+"-"+(yyyy%100));
+                    break;
+                
+            case 2: out.println(mm+"-"+dd+"-"+yyyy);
+                    break;
+                
+            case 3: out.println(yyyy+"-"+mm+"-"+dd);
+                    break;
+        }
+        }
+        catch(Exception e)
+        {
+            
+        }
+        return super.doStartTag();
+    }
+    
+}
+
+=====================================================================
+
+<%-- 
+    Document   : dateConverter
+    Created on : 5 Dec, 2014, 12:45:17 PM
+    Author     : student
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <%@taglib uri="/WEB-INF/tlds/Sal" prefix="s" %>
+    <s:dateForm odate="${param.odate}" choice="${param.choice}"></s:dateForm>
+    </body>
+</html>
+
+
+=====================================================================
+
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body>
+        <form name="dateC" action="dateConverter.jsp">
+            
+            Enter Date (dd:mm:yyyy): <br><br>
+            <input name="odate" type="text">
+            <br><br>
+            Select Format:
+            <select name="choice">
+                <option value="1">dd-mm-yy</option>
+                <option value="2">mm-dd-yyyy</option>
+                <option value="3">yyyy-mm-dd</option>
+            </select>
+            <br><br>
+            <input type="Submit" value="SUBMIT">
+            
+        </form>
+    </body>
+</html>
+
+=====================================================================
+
+

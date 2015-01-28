@@ -1,0 +1,28 @@
+package com.example.mt;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Menu;
+
+public class ExitActivity extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_exit);
+		
+		String uName = getIntent().getStringExtra("username");
+		//To retrieve String
+		
+		//to retrieve bundle and values inside the bundle
+		getIntent().getExtras().getInt("code");
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.exit, menu);
+		return true;
+	}
+
+}
